@@ -1,0 +1,122 @@
+@model IEnumerable<LtdTH1.Models.Learner>
+
+@{
+    ViewData["Title"] = "Learner List";
+    var pageNum = (int?)ViewBag.pageNum ?? 0;
+    var currentPage = (int?)ViewBag.pageIndex ?? 1;
+    var majorId = (int?)ViewBag.mid;
+    var keyword = (string?)ViewBag.keyword;
+}
+
+<h1 class="page-title">Learner List</h1>
+
+@await Component.InvokeAsync("Major")
+
+<form id="learner-search-form" class="learner-search mb-2">
+    <div class="input-group">
+        <input id="keyword" name="keyword" type="search" class="form-control" placeholder="Search learner" aria-label="Search learner" />
+        <button id="btnSearch" class="btn btn-primary" type="submit" aria-label="Search">⌕</button>
+    </div>
+</form>
+
+<div id="content">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Mã</th>
+                <th>Tên</th>
+                <th>Họ</th>
+                <th>Ngành</th>
+                <th>Ngày nhập học</th>
+                <th>Chức năng</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var learner in Model)
+            {
+                <tr>
+                    <td>@learner.LearnerID</td>
+                    <td>@learner.FirstMidName</td>
+                    <td>@learner.LastName</td>
+                    <td>@learner.Major?.MajorName</td>
+                    <td>@learner.EnrollmentDate.ToString("M/d/yyyy h:mm:ss tt")</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@learner.LearnerID">Edit</a> |
+                        <a asp-action="Delete" asp-route-id="@learner.LearnerID">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    @if (pageNum > 0)
+    {
+        <nav aria-label="Learner list pages">
+            <ul class="pagination mb-0">
+                @for (var pageNumber = 1; pageNumber <= pageNum; pageNumber++)
+                {
+                    <li class="page-item @(pageNumber == currentPage ? "active" : string.Empty)"
+                        data-page="@pageNumber"
+                        data-mid="@majorId"
+                        data-keyword="@keyword">
+                        <a class="page-link" href="#">@pageNumber</a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    }
+</div>
+
+<p class="mt-3">
+    <a asp-action="Create" class="btn btn-primary">Create New Student</a>
+</p>
+
+@section Scripts {
+    <script>
+        $(function () {
+            const filterUrl = '@Url.Action("LearnerFilter", "Learner")';
+
+            function loadLearners(pageIndex) {
+                const activeMajorId = $(".major-nav li.active").attr("id");
+
+                $.ajax({
+                    url: filterUrl,
+                    data: {
+                        mid: activeMajorId || null,
+                        keyword: $("#keyword").val(),
+                        pageIndex: pageIndex || 1
+                    },
+                    success: function (html) {
+                        $("#content").html(html);
+                    }
+                });
+            }
+
+            $(".major-nav").on("click", "li[id] > a", function (event) {
+                event.preventDefault();
+
+                $(".major-nav li").removeClass("active").children(".nav-link").removeClass("active");
+                $(this).closest("li").addClass("active");
+                $(this).addClass("active");
+                loadLearners(1);
+            });
+
+            $("#learner-search-form").on("submit", function (event) {
+                event.preventDefault();
+                loadLearners(1);
+            });
+
+            $("#content").on("click", ".pagination li.page-item", function (event) {
+                event.preventDefault();
+                const pageIndex = $(this).attr("data-page");
+                loadLearners(pageIndex);
+            });
+
+            const selectedMajorId = new URLSearchParams(window.location.search).get("mid");
+            if (selectedMajorId) {
+                const selectedMajor = $(".major-nav li[id='" + selectedMajorId + "']");
+                selectedMajor.addClass("active").children(".nav-link").addClass("active");
+            }
+        });
+    </script>
+}

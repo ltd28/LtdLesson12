@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Management System</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/LtdTH1.styles.css" asp-append-version="true" />
+</head>
+<body class="admin-body">
+    <div class="admin-shell">
+        <aside class="admin-sidebar">
+            @await Component.InvokeAsync("Render")
+        </aside>
+
+        <div class="admin-main">
+            <header class="admin-topbar">
+                <button class="sidebar-toggle" type="button" aria-label="Toggle sidebar" onclick="document.body.classList.toggle('sidebar-collapsed')">☰</button>
+                <form class="top-search" role="search" onsubmit="return false">
+                    <input class="form-control" type="search" placeholder="Search for..." aria-label="Search" />
+                    <button class="btn btn-primary" type="submit" aria-label="Search">⌕</button>
+                </form>
+            </header>
+            <main class="admin-content">
+                @RenderBody()
+            </main>
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

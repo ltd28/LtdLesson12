@@ -1,0 +1,90 @@
+@model IEnumerable<LtdTH1.Models.Student>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-controller="Student" asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Mã
+            </th>
+            <th>
+                Họ tên
+            </th>
+            <th>
+                Ngày sinh
+            </th>
+            <th>
+                Ngành
+            </th>
+            <th>
+               Giới tính
+            </th>
+            <th>
+               Hệ ĐT
+            </th>
+            <th>
+                Địa chỉ
+            </th>
+            <th>
+               Email
+            </th>
+            <th>Ảnh</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var s in Model)
+        {
+            <tr>
+                <td>@s.Id</td>
+                <td>@s.Name</td>
+                <td>@s.DateOfBorth</td>
+                @{
+                    string str = "";
+                    switch (s.Branch)
+                    {
+                        case Branch.IT:
+                            str = "CNTT";
+                            break;
+                        case Branch.BE:
+                            str = "Kinh tế";
+                            break;
+                        case Branch.CE:
+                            str = "Công trình";
+                            break;
+                        case Branch.EE:
+                            str = "Điện - Điện tử";
+                            break;
+                    }
+                }
+                <td>@str</td>
+                <td>@(s.Gender == Gender.Male ? "Nam" : "Nữ")</td>
+                <td>@(s.IsRegular ? "Chính quy" : "Phi chính quy")</td>
+                <td>@s.Address</td>
+                <td>@s.Email</td>
+                <td>
+                    @if (!string.IsNullOrEmpty(s.Image))
+                    {
+                        <img src="@Url.Content("~/images/" + s.Image)"
+                             alt="Ảnh sinh viên"
+                             width="80"
+                             height="80"
+                             style="object-fit:cover" />
+                    }
+                    else
+                    {
+                        <span>Chưa có ảnh</span>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,116 @@
+@model LtdTH1.Models.Student
+
+@{
+    ViewData["Title"] = "Thêm sinh viên";
+}
+
+<h1>Thêm sinh viên</h1>
+
+<h4>Thông tin sinh viên</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <form asp-controller="Student" asp-action="Create" method="post" enctype="multipart/form-data" class="mt-3">
+            <div style="margin-top:7px" class="form-group row">
+                <label asp-for="Name" class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-10">
+                    <input asp-for="Name" class="form-control" placeholder="Họ tên">
+                </div>
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div style="margin-top:7px" class="form-group row">
+                <label asp-for="Email" class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-10">
+                    <input asp-for="Email" class="form-control" placeholder="Email">
+                </div>
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div style="margin-top:7px" class="form-group row">
+                <label asp-for="Password" class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-10">
+                    <input asp-for="Password" type="password"
+                           class="form-control" placeholder="Nhập mật khẩu">
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div style="margin-top:7px" class="form-group row">
+                <label asp-for="Branch" class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-10">
+                    <select asp-for="Branch" class="custom-select mr-sm-2"
+                            asp-items="Html.GetEnumSelectList<Branch>()"></select>
+                    @*<select asp-for="Gender" asp-items="ViewBag.AllBranches"></select>*@
+                    <span asp-validation-for="Branch" class="text-danger"></span>
+                </div>
+            </div>
+            <div style="margin-top:7px" class="form-group row">
+                <label asp-for="IsRegular" class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-10">
+                    <input type="checkbox" class="custom-control-input" asp-for="IsRegular">
+                </div>
+                <span asp-validation-for="IsRegular" class="text-danger"></span>
+            </div>
+            <div style="margin-top:7px" class="form-group row">
+                <label asp-for="DateOfBorth" class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-10">
+                    <input asp-for="DateOfBorth" class="form-control">
+                </div>
+                <span asp-validation-for="DateOfBorth" class="text-danger"></span>
+            </div>
+            <div style="margin-top:7px" class="form-group row">
+                <label asp-for="Gender" class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-10">
+                    @foreach (var gender in ViewBag.AllGenders)
+                    {
+                        <label class="radio-inline">
+                            <input type="radio" asp-for="Gender" value="@gender"
+                                   id="Gender@(gender)" />@gender<br />
+                        </label>
+                    }
+                </div>
+                <span asp-validation-for="Gender" class="text-danger"></span>
+            </div>
+
+            <div style="margin-top:7px" class="form-group row">
+                <label asp-for="Address" class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-10">
+                    <textarea asp-for="Address" class="form-control"
+                              placeholder="Địa chỉ"></textarea>
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div style="margin-top:7px" class="form-group row">
+                <label asp-for="Diem" class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-10">
+                    <input asp-for="Diem" type="number"
+                           class="form-control" min="0" max="10" step="0.1"
+                           placeholder="Nhập điểm từ 0 đến 10" />
+                    <span asp-validation-for="Diem" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group row" style="margin-top:7px">
+                <label class="col-sm-2 col-form-label">Ảnh</label>
+                <div class="col-sm-10">
+                    <input type="file" name="Photo"
+                           class="form-control" accept="image/*">
+                </div>
+            </div>
+
+            <div style="margin-top:10px" class="form-group row">
+                <div class="col-sm-10">
+                    <button type="submit" class="btn btn-primary">Create</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

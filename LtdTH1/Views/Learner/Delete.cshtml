@@ -1,0 +1,46 @@
+@model LtdTH1.Models.Learner
+
+@{
+    ViewData["Title"] = "Xóa người học";
+    var hasEnrollments = Model.Enrollments.Count > 0;
+}
+
+<h1>Xóa người học</h1>
+<h4>Bạn có chắc chắn muốn xóa người học này?</h4>
+<hr />
+
+@if (TempData["DeleteError"] is string error)
+{
+    <div class="alert alert-danger" role="alert">@error</div>
+}
+
+@if (hasEnrollments)
+{
+    <div class="alert alert-warning" role="alert">
+        Người học này có @Model.Enrollments.Count đăng ký khóa học nên không thể xóa.
+    </div>
+}
+
+<dl class="row">
+    <dt class="col-sm-3">Tên</dt>
+    <dd class="col-sm-9">@Model.FirstMidName</dd>
+    <dt class="col-sm-3">Họ</dt>
+    <dd class="col-sm-9">@Model.LastName</dd>
+    <dt class="col-sm-3">Ngành</dt>
+    <dd class="col-sm-9">@Model.Major?.MajorName</dd>
+    <dt class="col-sm-3">Ngày nhập học</dt>
+    <dd class="col-sm-9">@Model.EnrollmentDate.ToShortDateString()</dd>
+</dl>
+
+@if (!hasEnrollments)
+{
+    <form asp-action="Delete" asp-route-id="@Model.LearnerID" method="post">
+        <input type="hidden" asp-for="LearnerID" />
+        <button type="submit" class="btn btn-danger">Xóa</button>
+        <a asp-action="Index" class="btn btn-secondary">Hủy</a>
+    </form>
+}
+else
+{
+    <a asp-action="Index" class="btn btn-secondary">Quay lại danh sách</a>
+}

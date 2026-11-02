@@ -1,0 +1,54 @@
+@model IEnumerable<LtdTH1.Models.Learner>
+
+@{
+    var pageNum = (int?)ViewBag.pageNum ?? 0;
+    var currentPage = (int?)ViewBag.pageIndex ?? 1;
+    var majorId = (int?)ViewBag.mid;
+    var keyword = (string?)ViewBag.keyword;
+}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Mã</th>
+            <th>Tên</th>
+            <th>Họ</th>
+            <th>Ngành</th>
+            <th>Ngày nhập học</th>
+            <th>Chức năng</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var learner in Model)
+        {
+            <tr>
+                <td>@learner.LearnerID</td>
+                <td>@learner.FirstMidName</td>
+                <td>@learner.LastName</td>
+                <td>@learner.Major?.MajorName</td>
+                <td>@learner.EnrollmentDate.ToString("M/d/yyyy h:mm:ss tt")</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@learner.LearnerID">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@learner.LearnerID">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (pageNum > 0)
+{
+    <nav aria-label="Learner list pages">
+        <ul class="pagination mb-0">
+            @for (var pageNumber = 1; pageNumber <= pageNum; pageNumber++)
+            {
+                <li class="page-item @(pageNumber == currentPage ? "active" : string.Empty)"
+                    data-page="@pageNumber"
+                    data-mid="@majorId"
+                    data-keyword="@keyword">
+                    <a class="page-link" href="#">@pageNumber</a>
+                </li>
+            }
+        </ul>
+    </nav>
+}

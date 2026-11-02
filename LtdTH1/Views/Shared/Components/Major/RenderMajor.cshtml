@@ -1,0 +1,10 @@
+@model IEnumerable<LtdTH1.Models.Major>
+
+<ul class="nav nav-pills major-nav mb-3" aria-label="Lọc người học theo ngành">
+    @foreach (var major in Model)
+    {
+        <li class="nav-item" id="@major.MajorID">
+            <a class="nav-link" href="#">@major.MajorName</a>
+        </li>
+    }
+</ul>

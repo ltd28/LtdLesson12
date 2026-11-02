@@ -1,0 +1,20 @@
+@model IEnumerable<LtdTH1.Models.Branch>
+
+@{
+    ViewData["Title"] = "Branches";
+}
+
+<h1 class="page-title">Branches</h1>
+<p class="text-secondary">Các ngành đang được khai báo trong hệ thống.</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr><th>Branch</th></tr>
+    </thead>
+    <tbody>
+        @foreach (var branch in Model)
+        {
+            <tr><td>@branch</td></tr>
+        }
+    </tbody>
+</table>

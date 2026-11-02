@@ -1,0 +1,26 @@
+@model IEnumerable<LtdTH1.Models.SubjectListItemViewModel>
+
+@{
+    ViewData["Title"] = "Subjects";
+}
+
+<h1 class="page-title">Subjects</h1>
+<p class="text-secondary">Danh sách môn học được tổng hợp từ tên các khóa học.</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Subject</th>
+            <th>Courses</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var subject in Model)
+        {
+            <tr>
+                <td>@subject.SubjectName</td>
+                <td>@subject.CourseCount</td>
+            </tr>
+        }
+    </tbody>
+</table>
